@@ -12,32 +12,63 @@ Once you have them all, put them on the page. It’s okay if some of the facts a
 
 (Note: You’ll need to make multiple requests for this.)
  */
+let fav_no = 7
 base_url = 'http://numbersapi.com/'
+date_url = `http://numbersapi.com/${fav_no}/date`
+math_url = `http://numbersapi.com/${fav_no}/math`
+year_url = `http://numbersapi.com/${fav_no}/year`
 let ul = document.getElementById('info')
-    let promise_list = []
+let fav_ul = document.getElementById('fav_no_info')
+let loop_start = 12;
+let loop_end = 17;
+let promise_list = []
+    // my favorite number requests
+    const pushPromises = (pro, list)=>{ list.push(pro)}
+
+const favoriteNumber = () => {
+    let p1 = axios.get(`${base_url}${fav_no}`)
+    pushPromises(p1, promise_list)
+    let p2 = axios.get(`${date_url}`)
+    pushPromises(p2, promise_list)
+
+    let p3 = axios.get(`${math_url}`)
+    pushPromises(p3, promise_list)
+
+    let p4 = axios.get(`${year_url}`)
+    pushPromises(p4 , promise_list)
+
+    return promise_list
+}
+console.log(promise_list)
+Promise.all(favoriteNumber()).then(values => {
+    console.log(values)
+    displayData(values, fav_ul)
+    emptyList(promise_list)
+}).catch(err => console.log(err))
+const emptyList=(list)=>{
+    list.length = 0
+}
+console.log(promise_list)
+
 const specialNumber = (url, i) => {
         let res = axios.get(`${url}${i}`)
         return res
-
-
 }
 
 
-for (let i = 0; i < 5; i++){
+for (let i = loop_start; i < loop_end; i++){
     let p = specialNumber(base_url, i)
-    promise_list.push(p)
+    pushPromises(p,promise_list)
 
 }
 console.log(promise_list)
+
 Promise.all(promise_list).then(function (values) {
+    displayData(values, ul)
+}).catch(err => console.log(err))
 
-    displayData(values)
-
-})
-
-function displayData(list) {
+function displayData(list, ul) {
     for (i of list) {
-        console.log(i.data)
         let li = document.createElement('li')
         li.innerHTML = i.data
         ul.append(li)
