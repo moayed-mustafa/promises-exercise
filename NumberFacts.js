@@ -46,7 +46,7 @@ Promise.all(favoriteNumber()).then(values => {
     emptyList(promise_list)
 }).catch(err => console.log(err))
 const emptyList=(list)=>{
-    list.length = 0
+    list = []
 }
 console.log(promise_list)
 
