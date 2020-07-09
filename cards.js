@@ -1,26 +1,9 @@
-console.log('hello')
 
-/**
- * Make a request to the Deck of Cards API to request a single card from a newly shuffled deck.
- *  Once you have the card, console.log the value and the suit (e.g. “5 of spades”, “queen of diamonds”). ✔︎
-
-Make a request to the deck of cards API to request a single card from a newly shuffled deck.
-Once you have the card, make a request to the same API to get one more card from the same deck.
-
-Once you have both cards, console.log the values and suits of both cards.
-
-Build an HTML page that lets you draw cards from a deck.
-When the page loads, go to the Deck of Cards API to create a new deck,
-and show a button on the page that will let you draw a card. Every time you click the button, display a new card, until there are no cards left in the deck
- */
 
 const deck_url = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1'
 let cards = []
-let cardImg= document.createElement('img')
 
-// drawCards.addEventListener('click', function () {
-//     console.log('hi')
-// })
+
 const shuffleDeck = (url) => {
      return axios.get(url)
 }
@@ -30,7 +13,7 @@ let card = shuffleDeck(deck_url).then(data => {
     return axios.get(`https://deckofcardsapi.com/api/deck/${data.data.deck_id}/draw/?count=1
     `)
  })
-     .catch(err => console.log(err))
+
 
 card.then(data => {
     let btn = document.querySelector('.draw')
@@ -39,7 +22,7 @@ card.then(data => {
     console.log(data.data.cards[0].value, data.data.cards[0].suit )
 
 
-     })
+     }).catch(err => console.log(err))
 
 
 //  Make a request to the deck of cards API to request a single card from a newly shuffled deck.
@@ -75,6 +58,10 @@ drawCard = allDeck.then(data => {
         console.log(data.data.cards)
         if(i < data.data.cards.length) {
             createImage(data.data.cards[i].image)
+        }
+        else {
+            console.log(i, 'now we are done!')
+
         }
         i++
         console.log(i)
